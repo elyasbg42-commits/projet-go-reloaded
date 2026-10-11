@@ -26,4 +26,5 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Erreur d'écriture:", err)
 		os.Exit(1)
 	}
+	fmt.Printf("%q\n", tokenRe.FindAllString("Ready, set, go (up) !", -1))
 }

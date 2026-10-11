@@ -1,6 +1,7 @@
 package main
 
 import (
+	"regexp"
 	"strings"
 )
 
@@ -19,3 +20,9 @@ func Process(text string) string {
 	}
 	return strings.Join(lines, "\n")
 }
+
+// tokenRe reconnait soit une balise complète, soit un mot (suite de non-espaces).
+// utiliser strconv.Parseint puis strconv.Atoi.
+// remplancer le mot par sa valeur et supprime la balise.
+var tokenRe = regexp.MustCompile(`\((?:hex|bin)\)|\((?:up|low|cap)(?::\s*,\s*\d+)?\)|[^\s]+`)
+var tagRe = regexp.MustCompile(`^\((hex|bin|up|low|cap)(?::\s*,\s*(\d+))?\)$`)
