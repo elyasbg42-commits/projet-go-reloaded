@@ -5,24 +5,21 @@ import (
 	"strings"
 )
 
-//Transformer le texte en une liste de mots, avec strings.Fields.
-//Process applique toutes les règles, ligne par ligne, en conservant les retours à la ligne du texte d'origine.
-//Traiter une balise comme un élèment à part de la liste qui agit sur ce qui la précède puis dispartaît.
-
+// Process applique toutes les règles, ligne par ligne,
+// en conservant les retours à la ligne du texte d'origine.
 func Process(text string) string {
 	lines := strings.Split(text, "\n")
 	for i, line := range lines {
-		//line = convertTags(line)    // etape 3 et 4
-		//line = fixPunctuation(line) // etape 6
-		//line = fixQuotes(line)      // etape 6
-		//line = fixArticles(line)    // etape 5
+		//line = convertTags(line)
+		//line = FixPunctuation(line)
+		//line = FixQuotes(line)
+		//line = FixArticles(line)
 		lines[i] = line
 	}
 	return strings.Join(lines, "\n")
 }
 
-// tokenRe reconnait soit une balise complète, soit un mot (suite de non-espaces).
-// utiliser strconv.Parseint puis strconv.Atoi.
-// remplancer le mot par sa valeur et supprime la balise.
-var tokenRe = regexp.MustCompile(`\((?:hex|bin)\)|\((?:up|low|cap)(?::\s*,\s*\d+)?\)|[^\s]+`)
-var tagRe = regexp.MustCompile(`^\((hex|bin|up|low|cap)(?::\s*,\s*(\d+))?\)$`)
+// tagRe reconnaît une balise valide : (hex) (bin) (up) (low) (cap)
+// avec, éventuellement, un nombre : (up, 2) ou (cap,6).
+// Elle peut être collée à un mot : 42(hex) ou (cap,6),it
+var tagRe = regexp.MustCompile(`\(\s*(hex|bin|up|low|cap)\s*(?:,\s*(\d+)\s*)?\)`)

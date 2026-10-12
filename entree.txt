@@ -1,2 +1,1 @@
-étape 0 du Projet
-aucune règle n'est appliquée
+Étape 0 du Projet. lecture du fichier d'entrée et écriture du fichier de sortie.

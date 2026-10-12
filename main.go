@@ -8,6 +8,8 @@ import (
 // Récupèrer les arguments avec os.Args et vérifie qu'il y en a bien deux.
 // Lire le fichier d'entrée avec os.ReadFile et recopier le tel quel dans le fichier de sortie avec os.writeFile.
 // Gèrer les erreurs proprement.
+// Récupère les arguments avec os.Args et vérifie qu'il y en a bien deux,
+// lit le fichier d'entrée, applique les règles, écrit le fichier de sortie.
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "Usage: go run . <fichier_entree> <fichier_sortie>")
@@ -26,5 +28,4 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Erreur d'écriture:", err)
 		os.Exit(1)
 	}
-	fmt.Printf("%q\n", tokenRe.FindAllString("Ready, set, go (up) !", -1))
 }
