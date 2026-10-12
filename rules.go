@@ -15,7 +15,7 @@ func Process(text string) string {
 		line = convertTags(line)
 		line = FixPunctuation(line)
 		line = FixQuotes(line)
-		//line = FixArticles(line)
+		line = FixArticles(line)
 		lines[i] = line
 	}
 	return strings.Join(lines, "\n")
@@ -143,4 +143,21 @@ func FixQuotes(line string) string {
 func isContraction(runes []rune, i int) bool {
 	return i > 0 && i < len(runes)-1 &&
 		unicode.IsLetter(runes[i-1]) && unicode.IsLetter(runes[i+1])
+}
+
+// FixArticles transforme "a" en "an" (et "A" en "An") quand le mot suivant
+// commence par une voyelle ou un h.
+func FixArticles(line string) string {
+	words := strings.Fields(line)
+	for i := 0; i < len(words)-1; i++ {
+		if words[i] != "a" && words[i] != "A" {
+			continue
+		}
+		// on ignore une éventuelle apostrophe ou parenthèse devant le mot suivant
+		next := strings.TrimLeft(words[i+1], `'"(`)
+		if next != "" && strings.ContainsRune("aeiouhAEIOUH", []rune(next)[0]) {
+			words[i] += "n"
+		}
+	}
+	return strings.Join(words, " ")
 }
