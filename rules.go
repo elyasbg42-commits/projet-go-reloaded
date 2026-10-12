@@ -13,7 +13,7 @@ func Process(text string) string {
 	lines := strings.Split(text, "\n")
 	for i, line := range lines {
 		line = convertTags(line)
-		//line = FixPunctuation(line)
+		line = FixPunctuation(line)
 		//line = FixQuotes(line)
 		//line = FixArticles(line)
 		lines[i] = line
@@ -95,19 +95,12 @@ func capitalize(word string) string {
 	return string(runes)
 }
 
-// FixArticles transforme "a" en "an" (et "A" en "An") quand le mot suivant
-// commence par une voyelle ou un h.
-func FixArticles(line string) string {
-	words := strings.Fields(line)
-	for i := 0; i < len(words)-1; i++ {
-		if words[i] != "a" && words[i] != "A" {
-			continue
-		}
-		// on ignore une éventuelle apostrophe ou parenthèse devant le mot suivant
-		next := strings.TrimLeft(words[i+1], `'"(`)
-		if next != "" && strings.ContainsRune("aeiouhAEIOUH", []rune(next)[0]) {
-			words[i] += "n"
-		}
-	}
-	return strings.Join(words, " ")
+// punctRe capture un groupe de ponctuation avec les espaces qui l'entourent.
+var punctRe = regexp.MustCompile(`\s*([.,!?:;]+)\s*`)
+
+// FixPunctuation colle la ponctuation au mot précédent
+// et place un espace après le groupe.
+func FixPunctuation(line string) string {
+	line = punctRe.ReplaceAllString(line, "$1 ")
+	return strings.TrimSpace(line)
 }
