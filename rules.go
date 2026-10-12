@@ -14,7 +14,7 @@ func Process(text string) string {
 	for i, line := range lines {
 		line = convertTags(line)
 		line = FixPunctuation(line)
-		//line = FixQuotes(line)
+		line = FixQuotes(line)
 		//line = FixArticles(line)
 		lines[i] = line
 	}
@@ -103,4 +103,44 @@ var punctRe = regexp.MustCompile(`\s*([.,!?:;]+)\s*`)
 func FixPunctuation(line string) string {
 	line = punctRe.ReplaceAllString(line, "$1 ")
 	return strings.TrimSpace(line)
+}
+
+// FixQuotes colle les apostrophes par paires aux mots qu'elles entourent.
+// Une apostrophe entre deux lettres (contraction) est ignorée.
+func FixQuotes(line string) string {
+	runes := []rune(line)
+	var out []rune
+	open := false
+	skipSpaces := false
+
+	for i, r := range runes {
+		if r == ' ' && skipSpaces {
+			continue // espaces après une apostrophe ouvrante
+		}
+		skipSpaces = false
+
+		if r != '\'' || isContraction(runes, i) {
+			out = append(out, r)
+			continue
+		}
+
+		if !open { // apostrophe ouvrante
+			out = append(out, r)
+			open = true
+			skipSpaces = true
+		} else { // apostrophe fermante : retirer les espaces avant
+			for len(out) > 0 && out[len(out)-1] == ' ' {
+				out = out[:len(out)-1]
+			}
+			out = append(out, r)
+			open = false
+		}
+	}
+
+	return string(out)
+}
+
+func isContraction(runes []rune, i int) bool {
+	return i > 0 && i < len(runes)-1 &&
+		unicode.IsLetter(runes[i-1]) && unicode.IsLetter(runes[i+1])
 }

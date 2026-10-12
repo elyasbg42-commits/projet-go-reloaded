@@ -8,3 +8,4 @@ one two three four (cap, 10)
 some text (up, 3)
 it (cap) was the best of times
 I  was siting over there ,and then BAMM !!
+He said ' hi ' and she said ' bye ' ... then left
