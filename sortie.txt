@@ -1,1 +1,9 @@
 Étape 0 du Projet. lecture du fichier d'entrée et écriture du fichier de sortie.
+Simply add 66 and 2 and you will see the result is 68
+I should stop shouting
+Welcome to the Brooklyn Bridge
+This is SO EXCITING
+STOP shouting now please
+One Two Three Four
+SOME TEXT
+It was the best of times
